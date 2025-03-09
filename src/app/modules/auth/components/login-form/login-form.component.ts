@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, inject } from '@angular/core';
 import { Validators, FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { faPen, faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
@@ -18,6 +18,7 @@ export class LoginFormComponent {
   private authService = inject(AuthService);
   private router = inject(Router);
   private route = inject(ActivatedRoute);
+  private cdr = inject(ChangeDetectorRef);
 
   form = this.formBuilder.nonNullable.group({
     email: ['', [Validators.email, Validators.required]],
@@ -55,10 +56,22 @@ export class LoginFormComponent {
         error: (error) => {
           this.status = 'failed';
           this.errorMessage = error?.message || 'Invalid email or password';
+          this.cdr.markForCheck();
+          setTimeout(() => {
+            this.cdr.markForCheck();
+          }, 2000);
         }
       });
     } else {
       this.form.markAllAsTouched();
     }
+  }
+
+  togglePasswordVisibility() {
+    this.showPassword = !this.showPassword;
+  }
+
+  get isLoading(): boolean {
+    return this.status === 'loading';
   }
 }
