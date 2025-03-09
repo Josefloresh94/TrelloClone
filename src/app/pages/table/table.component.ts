@@ -4,7 +4,7 @@ import { debounceTime } from 'rxjs';
 import { Product } from '../../models/product';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { CdkTableModule } from '@angular/cdk/table';
-import { BtnComponent } from '../../components/btn/btn.component';
+import { BtnComponent } from '../../modules/shared/components/btn/btn.component';
 import { NgClass } from '@angular/common';
 import { DataSourceProduct } from './data-source';
 import { ColumnConfig } from '../../models/column-config';
