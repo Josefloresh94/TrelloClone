@@ -1,1 +1,36 @@
 /* You can add global styles to this file, and also import other style files */
+@import "tailwindcss";
+@plugin '@tailwindcss/forms';
+@import '@angular/cdk/overlay-prebuilt.css';
+
+@theme {
+  --color-success-700: oklch(0.527 0.154 150.069);
+  --color-success-800: oklch(0.448 0.119 151.328);
+  --color-success-300: oklch(0.871 0.15 154.449);
+
+  --color-primary-700: oklch(0.488 0.243 264.376);
+  --color-primary-800: oklch(0.424 0.199 265.638);
+  --color-primary-300: oklch(0.809 0.105 251.813);
+
+  --color-danger-700: oklch(0.505 0.213 27.518);
+  --color-danger-800: oklch(0.444 0.177 26.899);
+  --color-danger-300: oklch(0.808 0.114 19.571);
+
+  --color-sky-700: oklch(0.5 0.134 242.749);
+  --color-sky-800: oklch(0.443 0.11 240.79);
+  --color-sky-300: oklch(0.828 0.111 230.318);
+
+  --color-light: oklch(0.928 0.006 264.531);
+  --color-light-hover: oklch(0.872 0.01 258.338);
+  --color-light-focus: oklch(0.985 0.002 247.839);
+
+  --color-white: #ffffff;
+
+  /* Breakpoints */
+  --breakpoint-sm: 640px;
+  --breakpoint-md: 768px;
+  --breakpoint-lg: 1024px;
+  --breakpoint-xl: 1250px;
+  --breakpoint-2xl: 1536px,
+}
+
