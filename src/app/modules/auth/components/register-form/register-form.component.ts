@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, inject } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
@@ -18,6 +18,7 @@ export class RegisterFormComponent {
   private formBuilder= inject(FormBuilder);
   private router= inject(Router);
   private authService= inject(AuthService);
+  private cdr = inject(ChangeDetectorRef);
 
   formUser = this.formBuilder.nonNullable.group({
     email: ['', [Validators.email, Validators.required]],
@@ -39,6 +40,7 @@ export class RegisterFormComponent {
   showPassword = false;
   showConfirmPassword = false;
   showRegister = false;
+  errorMessage = '';
 
   register() {
     if (this.form.valid) {
@@ -48,10 +50,15 @@ export class RegisterFormComponent {
         .subscribe({
           next: () => {
             this.status = 'success';
-            this.router.navigate(['/app']);
+            this.router.navigate(['/home']);
           },
           error: (error) => {
             this.status = 'failed';
+            this.errorMessage = error?.message || 'Invalid email or password';
+            this.cdr.markForCheck();
+            setTimeout(() => {
+              this.cdr.markForCheck();
+            }, 2000);
           }
         })
     } else {
@@ -70,6 +77,7 @@ export class RegisterFormComponent {
           if (rta.isAvailable) {
             this.showRegister = true;
             this.form.controls.email.setValue(email);
+            this.cdr.markForCheck();
           } else {
             this.router.navigate(['/login'], {
               queryParams: { email }
@@ -78,7 +86,12 @@ export class RegisterFormComponent {
         },
         error: (error) => {
           this.statusUser = 'failed';
-          console.log(error);
+          this.errorMessage = error?.message || 'Error checking email availability';
+          this.cdr.markForCheck();
+          setTimeout(() => {
+            this.statusUser = 'init';
+            this.cdr.markForCheck();
+          }, 2000);
         }
       })
     } else {
