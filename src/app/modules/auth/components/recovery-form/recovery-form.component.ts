@@ -38,16 +38,16 @@ export class RecoveryFormComponent {
   showPassword = false;
   token = '';
 
-  // constructor() {
-  //   this.route.queryParamMap.subscribe(params => {
-  //     const token = params.get('token');
-  //     if(token){
-  //       this.token = token;
-  //     } else {
-  //       this.router.navigate(['/login']);
-  //     }
-  //   });
-  // }
+  constructor() {
+    this.route.queryParamMap.subscribe(params => {
+      const token = params.get('token');
+      if(token){
+        this.token = token;
+      } else {
+        this.router.navigate(['/login']);
+      }
+    });
+  }
 
   recovery() {
     if (this.form.valid) {

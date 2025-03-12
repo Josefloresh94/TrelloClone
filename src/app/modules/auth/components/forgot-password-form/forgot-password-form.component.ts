@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, inject } from '@angular/core';
 import { Validators, FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { RequestStatus } from '@models/request-status';
 import { AuthService } from '@services/auth.service';
@@ -13,10 +13,12 @@ import { BtnComponent } from "../../../shared/components/btn/btn.component";
 export class ForgotPasswordFormComponent {
   private formBuilder = inject(FormBuilder);
   private authService = inject(AuthService);
+  private cdr = inject(ChangeDetectorRef);
 
   form = this.formBuilder.nonNullable.group({
     email: ['', [Validators.email, Validators.required]],
   });
+
   status: RequestStatus = 'init';
   emailSent = false;
   errorMessage = '';
@@ -36,6 +38,10 @@ export class ForgotPasswordFormComponent {
           error: (error) => {
             this.status = 'failed';
             this.errorMessage = error?.message || 'An error occurred while trying to send the recovery email.';
+            this.cdr.markForCheck();
+            setTimeout(() => {
+              this.cdr.markForCheck();
+            }, 2000);
           }
         });
     } else {
