@@ -1,11 +1,12 @@
 import { Routes } from '@angular/router';
 import { authGuard } from '@guards/auth.guard';
+import { redirectGuard } from '@guards/redirect.guard';
 
 export const routes: Routes = [
   {
     path: '',
     loadComponent: () => import('./modules/layout/components/auth-layout/auth-layout.component').then(c => c.AuthLayoutComponent),
-    // canActivate: [NoAuthGuard],
+    canActivate: [redirectGuard],
     children: [
       {
         path: '',
@@ -60,13 +61,6 @@ export const routes: Routes = [
       // },
     ]
   },
-  {
-    path: 'board',
-    redirectTo: 'home/board',
-    pathMatch: 'full'
-  },
-
-  // Catch-all route for any unmatched routes
   {
     path: '**',
     redirectTo: ''
