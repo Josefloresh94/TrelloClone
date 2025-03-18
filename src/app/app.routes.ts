@@ -51,13 +51,13 @@ export const routes: Routes = [
         loadComponent:() => import('./modules/workspaces/pages/board/board.component').then(c => c.BoardComponent),
         title: 'Board'
       },
+      {
+        path: 'users',
+        loadComponent:() => import('./modules/users/users.component').then(c => c.UsersComponent),
+      },
       // {
       //   path: 'profile',
       //   loadComponent:() => import('./modules/profile/pages/profile/profile.component'),
-      // },
-      // {
-      //   path: 'users',
-      //   loadComponent:() => import('./modules/users/pages/users-table/users-table.component'),
       // },
     ]
   },
