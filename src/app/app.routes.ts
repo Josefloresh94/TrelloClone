@@ -44,16 +44,19 @@ export const routes: Routes = [
       {
         path: '',
         loadComponent:() => import('./modules/workspaces/pages/boards/boards.component').then(c => c.BoardsComponent),
+        canActivate: [authGuard],
         title: 'Boards'
       },
       {
         path: 'board',
         loadComponent:() => import('./modules/workspaces/pages/board/board.component').then(c => c.BoardComponent),
+        canActivate: [authGuard],
         title: 'Board'
       },
       {
         path: 'users',
         loadComponent:() => import('./modules/users/users.component').then(c => c.UsersComponent),
+        canActivate: [authGuard],
       },
       // {
       //   path: 'profile',

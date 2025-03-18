@@ -9,14 +9,14 @@ export class TokenService {
 
   saveToken(token: string) {
     // localStorage.setItem('token', token);
-    setCookie('token', token, {expires: 30, path: '/'});
+    setCookie('token', token, {expires: 365, path: '/'});
   }
 
   getToken(){
     // const token = localStorage.getItem('token');
     // return token;
     const token = getCookie('token');
-    return token
+    return token || null;
   }
 
   removeToken(){
@@ -25,45 +25,50 @@ export class TokenService {
   }
 
   removeRefreshToken() {
-    // removeCookie('refresh-token');
+    removeCookie('refresh-token');
   }
 
   saveRefreshToken(token: string) {
-    // setCookie('refresh-token', token, { expires: 365, path: '/' });
+    setCookie('refresh-token', token, { expires: 365, path: '/' });
   }
 
   getRefreshToken() {
-    // const token = getCookie('refresh-token');
-    // return token;
+    const token = getCookie('refresh-token');
+    return token;
   }
 
   isValidToken() {
     const token = this.getToken();
-    // if (!token) {
-    //   return false;
-    // }
-    // const decodeToken = jwtDecode<JwtPayload>(token);
-    // if (decodeToken && decodeToken?.exp) {
-    //   const tokenDate = new Date(0);
-    //   tokenDate.setUTCSeconds(decodeToken.exp);
-    //   const today = new Date();
-    //   return tokenDate.getTime() > today.getTime();
-    // }
-    // return false;
+    if (!token) {
+      return false;
+    }
+    try {
+      const decodeToken = jwtDecode<JwtPayload>(token);
+      if (decodeToken && decodeToken?.exp) {
+        const tokenDate = new Date(0);
+        tokenDate.setUTCSeconds(decodeToken.exp);
+        const today = new Date();
+        return tokenDate.getTime() > today.getTime();
+      }
+      return false;
+    } catch (error) {
+      console.error('Error decoding token:', error);
+      return false;
+    }
   }
 
   isValidRefreshToken() {
-  //   const token = this.getRefreshToken();
-  //   if (!token) {
-  //     return false;
-  //   }
-  //   const decodeToken = jwtDecode<JwtPayload>(token);
-  //   if (decodeToken && decodeToken?.exp) {
-  //     const tokenDate = new Date(0);
-  //     tokenDate.setUTCSeconds(decodeToken.exp);
-  //     const today = new Date();
-  //     return tokenDate.getTime() > today.getTime();
-  //   }
-  //   return false;
+    const token = this.getRefreshToken();
+    if (!token) {
+      return false;
+    }
+    const decodeToken = jwtDecode<JwtPayload>(token);
+    if (decodeToken && decodeToken?.exp) {
+      const tokenDate = new Date(0);
+      tokenDate.setUTCSeconds(decodeToken.exp);
+      const today = new Date();
+      return tokenDate.getTime() > today.getTime();
+    }
+    return false;
   }
 }

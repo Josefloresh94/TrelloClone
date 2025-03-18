@@ -5,7 +5,7 @@ import { User } from '@models/user';
 import { BehaviorSubject, tap, switchMap } from 'rxjs';
 import { environment } from 'src/environments/environment.development';
 import { TokenService } from './token.service';
-import { withToken } from '@interceptors/token.interceptor';
+import { withRefreshToken, withToken } from '@interceptors/token.interceptor';
 
 @Injectable({
   providedIn: 'root'
@@ -25,8 +25,21 @@ export class AuthService {
     .pipe(
       tap(response => {
         this.tokenService.saveToken(response.access_token);
+        this.tokenService.saveRefreshToken(response.refresh_token);
       })
     )
+  }
+
+  refreshToken(refreshToken: string) {
+    return this.http.post<ResponseLogin>(`${this.apiUrl}/api/v1/auth/refresh-token`,
+      {refreshToken},
+      {context: withRefreshToken()}
+    ).pipe(
+      tap(response => {
+        this.tokenService.saveToken(response.access_token);
+        this.tokenService.saveRefreshToken(response.refresh_token);
+      })
+    );;
   }
 
   register(name: string, email: string, password: string){
