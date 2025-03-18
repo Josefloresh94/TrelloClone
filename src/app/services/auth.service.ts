@@ -5,6 +5,7 @@ import { User } from '@models/user';
 import { BehaviorSubject, tap, switchMap } from 'rxjs';
 import { environment } from 'src/environments/environment.development';
 import { TokenService } from './token.service';
+import { withToken } from '@interceptors/token.interceptor';
 
 @Injectable({
   providedIn: 'root'
@@ -65,9 +66,7 @@ export class AuthService {
   getProfile() {
     const token = this.tokenService.getToken();
     return this.http.get<User>(`${this.apiUrl}/api/v1/auth/profile`, {
-      headers: {
-        Authorization: `Bearer ${token}`
-      }
+      context: withToken()
     }).pipe(
       tap(user => {
         this.user$.next(user);
