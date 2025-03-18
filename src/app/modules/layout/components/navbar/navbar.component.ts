@@ -6,11 +6,12 @@ import { Router, RouterModule } from '@angular/router';
 import { BtnComponent } from '@modules/shared/components/btn/btn.component';
 import { TokenService } from '@services/token.service';
 import { AuthService } from '@services/auth.service';
+import { AsyncPipe, NgIf } from '@angular/common';
 
 @Component({
   selector: 'app-navbar',
   standalone: true,
-  imports: [BtnComponent, OverlayModule, FontAwesomeModule, RouterModule],
+  imports: [BtnComponent, OverlayModule, FontAwesomeModule, RouterModule, AsyncPipe, NgIf],
   templateUrl: './navbar.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
@@ -31,9 +32,5 @@ export class NavbarComponent {
   logout() {
     this.authService.logout();
     this.router.navigate(['/login']);
-  }
-
-  isValidToken() {
-    console.log(this.tokenService.isValidToken());
   }
 }
